@@ -61,3 +61,27 @@ func InsertRoom(w http.ResponseWriter, r *http.Request) {
 
 	sendSuccessResponse(w, "Insert Participant to Room Successfull")
 }
+
+func LeaveRoom(w http.ResponseWriter, r *http.Request) {
+	db := connect()
+	defer db.Close()
+
+	errParseForm := r.ParseForm()
+	if errParseForm != nil {
+		sendErrorResponse(w, 500, "Failed to parse form")
+		return
+	}
+
+	id_account := r.Form.Get("id_account")
+	id_room := r.Form.Get("id_room")
+
+	query := "DELETE FROM participants WHERE id_account = ? AND id_room = ?"
+
+	_, err := db.Exec(query, id_account, id_room)
+	if err != nil {
+		sendErrorResponse(w, 500, "DB Query Fail")
+		return
+	}
+
+	sendSuccessResponse(w, "Leave Room Successfull")
+}

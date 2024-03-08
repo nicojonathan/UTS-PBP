@@ -22,6 +22,9 @@ func main() {
 
 	//endpoint no3
 	router.HandleFunc("/room/insert", controllers.InsertRoom).Methods("POST")
+
+	//endpoint no4
+	router.HandleFunc("/room/delete", controllers.LeaveRoom).Methods("DELETE")
 	
 
 	http.Handle("/", router)
